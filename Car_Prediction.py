@@ -76,6 +76,7 @@ with tab2:
     col3, col4 = st.columns(2)
     col5, col6 = st.columns(2)
     col7, col8 = st.columns(2)
+    col9,col10 = st.columns(2)
     
     # Categorical inputs from dropdowns
     with col1:
