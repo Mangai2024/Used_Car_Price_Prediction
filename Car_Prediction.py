@@ -112,16 +112,16 @@ with tab2:
         
         
         input_data = {
-            "reg_year": reg_year,
-            "kms": kms,
-            "power": power,
-            "mileage": mileage,
-            "engine_disp": engine_disp,
-            "brand_val": brand_val,
-            "model_val": model_val,
+            "Year of Manufacture": reg_year,
+            "Kms Driven": kms,
+            "Power": power,
+            "Mileage": mileage,
+            "Engine Displacement": engine_disp,
+            "Brand": brand_val,
+            "Model": model_val,
             "Transmission": Transmission_val,
-            "fuel_type_val": fuel_type_val,
-            "City_val": City_val
+            "Fuel Type": fuel_type_val,
+            "City": City_val
         }
         input_df = pd.DataFrame([input_data])
         
