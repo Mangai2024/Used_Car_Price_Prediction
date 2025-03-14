@@ -30,28 +30,29 @@ def set_background_image_local(image_path):
 
 
 # --- Load model and encoders ---
-model = load_model("random_forest_model.pkl")
-encoder_area = load_model("Area.pkl")
-encoder_brand = load_model("Brand.pkl")
-encoder_engine_disp = load_model("Engine_Displacement_(cc).pkl")
-encoder_fuel_type = load_model("Fuel_Type.pkl")
-encoder_mileage = load_model("Mileage_(kmpl).pkl")
-encoder_power = load_model("Power_(bhp).pkl")
-encoder_reg_year = load_model("Registration_Year.pkl")
-encoder_yom = load_model("Year_of_Manufacture.pkl")
+model = load_model("car1.h5")
+encoder_brand= load_model("encoder_brand.pkl")
+encoder_Cities= load_model("Cities.pkl")
+encoder_fuel_type = load_model("encoder_Fuel Type.pkl")
+encoder_Transmission = load_model("encoder_Transmission.pkl")
+encoder_model = load_model("encoder_modell.pkl")
+
 
 st.title("Car Price Prediction App")
 
 # --- Load data to generate dropdown options ---
 # Use the uploaded CSV file to create dropdown options.
-selected_df = pd.read_csv(r"E:\Used_Car_Price_Prediction\Final_UsedCars _Datafile.csv")
+df = pd.read_csv(r"finallist.csv")
 # Ensure the CSV has the required columns:
-# "Area", "Brand", "Fuel_Type", "Year_of_Manufacture"
+# "Brand", "Fuel_Type", "Year_of_Manufacture"
+
 dropdown_options = {
-    "Area": sorted(df["Area"].unique().tolist()),
+    "City": sorted(df["City"].unique().tolist()),
     "Brand": sorted(df["Brand"].unique().tolist()),
-    "Fuel_Type": sorted(df["Fuel_Type"].unique().tolist()),
-    "Year_of_Manufacture": sorted(df["Year_of_Manufacture"].unique().tolist())
+    "Fuel Type": sorted(df["Fuel Type"].unique().tolist()),
+    "Transmission": sorted(df["Transmission"].unique().tolist())
+    "Model": sorted(df["Model"].unique().tolist()),
+   
 }
 
 # --- Create Tabs for Home and Predict ---
@@ -78,45 +79,48 @@ with tab2:
     
     # Categorical inputs from dropdowns
     with col1:
-        area_select = st.selectbox("Select Area", dropdown_options["Area"])
-        area_val = encoder_area.transform([[area_select]])[0][0]
+        City_select = st.selectbox("Select City", dropdown_options["City"])
+        City_val = encoder_Cities.transform([[City_select]])[0][0]
     with col2:
         brand_select = st.selectbox("Select Brand", dropdown_options["Brand"])
         brand_val = encoder_brand.transform([[brand_select]])[0][0]
     with col3:
-        fuel_type_select = st.selectbox("Select Fuel Type", dropdown_options["Fuel_Type"])
+        fuel_type_select = st.selectbox("Select Fuel Type", dropdown_options["Fuel Type"])
         fuel_type_val = encoder_fuel_type.transform([[fuel_type_select]])[0][0]
     with col4:
-        yom_select = st.selectbox("Select Year of Manufacture", dropdown_options["Year_of_Manufacture"])
-        yom_val = encoder_yom.transform([[yom_select]])[0][0]
+        Transmission_select = st.selectbox("Select Transmission", dropdown_options["Transmission"])
+        Transmission_val = encoder_Transmission.transform([[Transmission_select]])[0][0]
+    with col5:
+        model_select = st.selectbox("Select model", dropdown_options["Model"])
+        model_val = encoder_model.transform([[model_select]])[0][0]
     
     # Numerical inputs
-    with col5:
-        engine_disp = st.number_input("Enter Engine Displacement (cc)", min_value=500, value=1200)
     with col6:
-        mileage = st.number_input("Enter Mileage (kmpl)", min_value=5.0, value=15.0)
+        engine_disp = st.number_input("Enter Engine Displacement (cc)", min_value=500, value=1200)
     with col7:
-        power = st.number_input("Enter Power (bhp)", min_value=10.0, value=100.0)
+        mileage = st.number_input("Enter Mileage (kmpl)", min_value=5.0, value=15.0)
     with col8:
+        power = st.number_input("Enter Power (bhp)", min_value=10.0, value=100.0)
+    with col9:
         reg_year = st.number_input("Enter Registration Year", min_value=1900, value=2015)
+    with col10:
+        kms = st.number_input("Enter kms_driven", min_value=1900, value=2015)
     
     # When Predict button is clicked, compile inputs and make a prediction.
     if st.button("Predict"):
-        # Transform numerical inputs using encoders (if available) or use directly.
-        engine_disp_val = encoder_engine_disp.transform([[engine_disp]])[0][0]
-        mileage_val = encoder_mileage.transform([[mileage]])[0][0]
-        power_val = encoder_power.transform([[power]])[0][0]
-        reg_year_val = encoder_reg_year.transform([[reg_year]])[0][0]
+        
         
         input_data = {
-            "Area": area_val,
-            "Brand": brand_val,
-            "Engine_Displacement_(cc)": engine_disp_val,
-            "Fuel_Type": fuel_type_val,
-            "Mileage_(kmpl)": mileage_val,
-            "Power_(bhp)": power_val,
-            "Registration_Year": reg_year_val,
-            "Year_of_Manufacture": yom_val
+            "reg_year": reg_year,
+            "kms": kms,
+            "power": power,
+            "mileage": mileage,
+            "engine_disp": engine_disp,
+            "brand_val": brand_val,
+            "model_val": model_val,
+            "Transmission": Transmission_val
+            "fuel_type_val": fuel_type_val
+            "City_val": City_val
         }
         input_df = pd.DataFrame([input_data])
         
