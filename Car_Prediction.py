@@ -118,8 +118,8 @@ with tab2:
             "engine_disp": engine_disp,
             "brand_val": brand_val,
             "model_val": model_val,
-            "Transmission": Transmission_val
-            "fuel_type_val": fuel_type_val
+            "Transmission": Transmission_val,
+            "fuel_type_val": fuel_type_val,
             "City_val": City_val
         }
         input_df = pd.DataFrame([input_data])
