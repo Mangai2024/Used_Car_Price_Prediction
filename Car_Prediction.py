@@ -50,7 +50,7 @@ dropdown_options = {
     "City": sorted(df["City"].unique().tolist()),
     "Brand": sorted(df["Brand"].unique().tolist()),
     "Fuel Type": sorted(df["Fuel Type"].unique().tolist()),
-    "Transmission": sorted(df["Transmission"].unique().tolist())
+    "Transmission": sorted(df["Transmission"].unique().tolist()),
     "Model": sorted(df["Model"].unique().tolist()),
    
 }
