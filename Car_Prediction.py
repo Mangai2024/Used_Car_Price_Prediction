@@ -32,7 +32,7 @@ def set_background_image_local(image_path):
 # --- Load model and encoders ---
 model = load_model("car1.h5")
 encoder_brand= load_model("encoder_brand.pkl")
-encoder_Cities= load_model("Cities.pkl")
+encoder_Cities= load_model("encoder_Cities.pkl")
 encoder_fuel_type = load_model("encoder_Fuel Type.pkl")
 encoder_Transmission = load_model("encoder_Transmission.pkl")
 encoder_model = load_model("encoder_modell.pkl")
