@@ -30,7 +30,7 @@ def set_background_image_local(image_path):
         unsafe_allow_html=True
     )
 
-set_background_image_local(r"12.png")
+set_background_image_local(r"12 (1).png")
 
 
 # --- Load model and encoders ---
