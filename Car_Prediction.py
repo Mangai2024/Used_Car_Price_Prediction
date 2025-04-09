@@ -32,23 +32,18 @@ def set_background_image_local(image_path):
 
 set_background_image_local(r"12 (1).png")
 
-
 # --- Load model and encoders ---
 model = load_model("car1.h5")
-encoder_brand= load_model("encoder_brand.pkl")
-encoder_Cities= load_model("encoder_Cities.pkl")
+encoder_brand = load_model("encoder_brand.pkl")
+encoder_Cities = load_model("encoder_Cities.pkl")
 encoder_fuel_type = load_model("encoder_Fuel Type.pkl")
 encoder_Transmission = load_model("encoder_Transmissions.pkl")
 encoder_model = load_model("encoder_modell.pkl")
 
-
 st.title("Car Price Prediction App")
 
 # --- Load data to generate dropdown options ---
-# Use the uploaded CSV file to create dropdown options.
 df = pd.read_csv(r"finallist.csv")
-# Ensure the CSV has the required columns:
-# "Brand", "Fuel_Type", "Year_of_Manufacture"
 
 dropdown_options = {
     "City": sorted(df["City"].unique().tolist()),
@@ -56,13 +51,12 @@ dropdown_options = {
     "Fuel Type": sorted(df["Fuel Type"].unique().tolist()),
     "Transmission": sorted(df["Transmission"].unique().tolist()),
     "Model": sorted(df["Model"].unique().tolist()),
-   
 }
 
-# --- Create Tabs for Home and Predict ---
-tab1, tab2 = st.tabs(["Home", "Predict"])
+# --- Sidebar Navigation ---
+selected_page = st.sidebar.radio("Go to", ["Home", "Predict"])
 
-with tab1:
+if selected_page == "Home":
     st.markdown("""
     **Welcome to the Car Price Prediction App!**
 
@@ -74,14 +68,14 @@ with tab1:
     - Click "Predict" to see the estimated price.
     """)
 
-with tab2:
+elif selected_page == "Predict":
     # Define columns for input layout
     col1, col2 = st.columns(2)
     col3, col4 = st.columns(2)
     col5, col6 = st.columns(2)
     col7, col8 = st.columns(2)
-    col9,col10 = st.columns(2)
-    
+    col9, col10 = st.columns(2)
+
     # Categorical inputs from dropdowns
     with col1:
         City_select = st.selectbox("Select City", dropdown_options["City"])
@@ -98,7 +92,7 @@ with tab2:
     with col5:
         model_select = st.selectbox("Select model", dropdown_options["Model"])
         model_val = encoder_model.transform([[model_select]])[0][0]
-    
+
     # Numerical inputs
     with col6:
         engine_disp = st.number_input("Enter Engine Displacement (cc)", min_value=500, value=1200)
@@ -110,11 +104,9 @@ with tab2:
         reg_year = st.number_input("Enter Registration Year", min_value=1900, value=2015)
     with col10:
         kms = st.number_input("Enter kms_driven", min_value=1900, value=2015)
-    
+
     # When Predict button is clicked, compile inputs and make a prediction.
     if st.button("Predict"):
-        
-        
         input_data = {
             "Year of Manufacture": reg_year,
             "Kms Driven": kms,
@@ -128,7 +120,6 @@ with tab2:
             "City": City_val
         }
         input_df = pd.DataFrame([input_data])
-        
         predicted_price = model.predict(input_df)
         st.subheader("Predicted Car Price")
         st.markdown(f"### :green[₹ {predicted_price[0]:,.2f}]")
