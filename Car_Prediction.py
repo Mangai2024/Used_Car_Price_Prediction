@@ -1,32 +1,36 @@
 import streamlit as st
-import pandas as pd
 import pickle
+import numpy as np
+import pandas as pd
 import base64
+from sklearn.preprocessing import OrdinalEncoder
 
-# --- Helper functions ---
 @st.cache_resource
+# Load models
 def load_model(model_path):
-    with open(model_path, "rb") as f:
-        return pickle.load(f)
-
+    with open(model_path, 'rb') as file:
+        return pickle.load(file)
+    
 def set_background_image_local(image_path):
-    with open(image_path, "rb") as f:
-        data = f.read()
-    base64_img = base64.b64encode(data).decode("utf-8")
+    with open(image_path, "rb") as file:
+        data = file.read()
+    base64_image = base64.b64encode(data).decode("utf-8")
     st.markdown(
         f"""
         <style>
         .stApp {{
-            background-image: url("data:image/png;base64,{base64_img}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background-image: url("data:image/png;base64,{base64_image}");
+            background-size: contain;
+            background-position: fit;
+            background-repeat: repeat;
             background-attachment: fixed;
-        }}
+        }}     
         </style>
         """,
         unsafe_allow_html=True
     )
+
+set_background_image_local(r"12.png")
 
 
 # --- Load model and encoders ---
